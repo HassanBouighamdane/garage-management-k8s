@@ -64,4 +64,4 @@ spec:
       targetPort: 8083
   selector:
     app: workshop-service
-  type: LoadBalancer
+  type: NodePort
