@@ -56,17 +56,17 @@ spec:
             - name: RABBITMQ_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: notification-conf
+                  name: rabbitmq-conf
                   key: RABBITMQ_HOST
             - name: RABBITMQ_PORT
               valueFrom:
                 configMapKeyRef:
-                  name: notification-conf
+                  name: rabbitmq-conf
                   key: RABBITMQ_PORT
             - name: RABBITMQ_USER
               valueFrom:
                 secretKeyRef:
-                  name: rabbitmq-secret-conf
+                  name: rabbitmq-secret
                   key: username
             - name: RABBITMQ_PASSWORD
               valueFrom:
