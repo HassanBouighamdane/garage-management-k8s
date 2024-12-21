@@ -64,4 +64,4 @@ spec:
       targetPort: 8081
   selector:
     app: client-service
-  type: NodePort
+  type: LoadBalancer

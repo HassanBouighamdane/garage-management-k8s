@@ -64,4 +64,4 @@ spec:
       targetPort: 8082
   selector:
     app: vehicule-service
-  type: NodePort
+  type: LoadBalancer

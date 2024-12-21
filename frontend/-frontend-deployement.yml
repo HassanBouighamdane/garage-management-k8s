@@ -22,7 +22,7 @@ spec:
             - containerPort: 3000
           env:                                  
             - name: REACT_APP_API_GATEWAY
-              value: "http://api-gateway-service:8080"
+              value: "http://localhost:8080"
 ---
 apiVersion: v1
 kind: Service
@@ -32,7 +32,7 @@ metadata:
   labels:
     app: garage-frontend
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: garage-frontend
   ports:

@@ -6,7 +6,7 @@ metadata:
   labels:
     app: api-gateway
 data:
-  CORS_ALLOWED_ORIGINS: "http://garage-frontend:3000"
+  CORS_ALLOWED_ORIGINS: "http://localhost:3000"  #http://garage-frontend:3000
   CORS_ALLOWED_METHODS: "GET,POST,PUT,DELETE,OPTIONS"
   CORS_ALLOWED_HEADERS: "*"
   CORS_ALLOW_CREDENTIALS: "true"
