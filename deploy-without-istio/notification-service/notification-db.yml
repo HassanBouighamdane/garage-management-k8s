@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-notification-service
+  namespace: garage-namespace
+spec:
+  selector:
+    app: mysql-notification
+  ports:
+    - port: 5437
+      protocol: TCP
+      targetPort: 3306
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql-notification-statefulset
+  namespace: garage-namespace
+spec:
+  replicas: 1
+  serviceName: mysql-notification-service
+  selector:
+    matchLabels:
+      app: mysql-notification
+  template:
+    metadata:
+      labels:
+        app: mysql-notification
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: mysql-notification-container
+          image: mysql:9 
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: password
+          ports:
+            - containerPort: 3306  
+              name: mysql-db-port
+          volumeMounts:
+            - name: mysqlvol
+              mountPath: /var/lib/mysql  
+  volumeClaimTemplates:
+    - metadata:
+        name: mysqlvol
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi
