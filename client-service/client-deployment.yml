@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-service
+  namespace: garage-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client-service
+  template:
+    metadata:
+      labels:
+        app: client-service
+    spec:
+      containers:
+        - name: client-service
+          image: bouihassan/garage-management-client-service:1.1.0
+          ports:
+            - containerPort: 8081
+
+          env:
+            - name: PROFILE
+              value: prod
+
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: client-conf
+                  key: DB_HOST
+                  
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: client-conf
+                  key: DB_NAME
+
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: client-conf
+                  key: DB_PORT
+
+            - name: DB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: client-conf
+                  key: DB_USERNAME
+
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-service
+  namespace: garage-namespace
+spec:
+  ports:
+    - port: 8081
+      targetPort: 8081
+  selector:
+    app: client-service
+  type: NodePort

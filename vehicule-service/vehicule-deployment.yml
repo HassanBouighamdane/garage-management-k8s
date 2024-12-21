@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vehicule-service
+  namespace: garage-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vehicule-service
+  template:
+    metadata:
+      labels:
+        app: vehicule-service
+    spec:
+      containers:
+        - name: vehicule-service
+          image: bouihassan/garage-management-vehicule-service:1.1.1
+          ports:
+            - containerPort: 8082
+
+          env:
+            - name: PROFILE
+              value: prod
+
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: vehicule-conf
+                  key: DB_HOST
+                  
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: vehicule-conf
+                  key: DB_NAME
+
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: vehicule-conf
+                  key: DB_PORT
+
+            - name: DB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: vehicule-conf
+                  key: DB_USERNAME
+
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vehicule-service
+  namespace: garage-namespace
+spec:
+  ports:
+    - port: 8082
+      targetPort: 8082
+  selector:
+    app: vehicule-service
+  type: NodePort
