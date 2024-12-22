@@ -1,0 +1,378 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: client-service
+  namespace: garage-namespace
+spec:
+  hosts:
+  - client-service
+  http:
+  - route:
+    - destination:
+        host: client-service
+        subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: client-service
+  namespace: garage-namespace
+spec:
+  host: client-service
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: postgres-client-service
+  namespace: garage-namespace
+spec:
+  hosts:
+  - postgres-client-service
+  http:
+  - route:
+    - destination:
+        host: postgres-client-service
+        subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: postgres-client-service
+  namespace: garage-namespace
+spec:
+  host: postgres-client-service
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: vehicule-service
+  namespace: garage-namespace
+spec:
+  hosts:
+  - vehicule-service
+  http:
+  - route:
+    - destination:
+        host: vehicule-service
+        subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: vehicule-service
+  namespace: garage-namespace
+spec:
+  host: vehicule-service
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: postgres-vehicule-service
+  namespace: garage-namespace
+spec:
+  hosts:
+  - postgres-vehicule-service
+  http:
+  - route:
+    - destination:
+        host: postgres-vehicule-service
+        subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: postgres-vehicule-service
+  namespace: garage-namespace
+spec:
+  host: postgres-vehicule-service
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: garage-frontend-service
+  namespace: garage-namespace
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - garage-gateway
+  http:
+  - route:
+    - destination:
+        host: garage-frontend-service
+        subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: garage-frontend-service
+  namespace: garage-namespace
+spec:
+  host: garage-frontend-service
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: invoice-service
+  namespace: garage-namespace
+spec:
+  hosts:
+  - invoice-service
+  http:
+  - route:
+    - destination:
+        host: invoice-service
+        subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: invoice-service
+  namespace: garage-namespace
+spec:
+  host: invoice-service
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: mongo-invoice-service
+  namespace: garage-namespace
+spec:
+  hosts:
+  - mongo-invoice-service
+  http:
+  - route:
+    - destination:
+        host: mongo-invoice-service
+        subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: mongo-invoice-service
+  namespace: garage-namespace
+spec:
+  host: mongo-invoice-service
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: notification-service
+  namespace: garage-namespace
+spec:
+  hosts:
+  - notification-service
+  http:
+  - route:
+    - destination:
+        host: notification-service
+        subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: notification-service
+  namespace: garage-namespace
+spec:
+  host: notification-service
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: postgres-notification-service
+  namespace: garage-namespace
+spec:
+  hosts:
+  - postgres-notification-service
+  http:
+  - route:
+    - destination:
+        host: postgres-notification-service
+        subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: postgres-notification-service
+  namespace: garage-namespace
+spec:
+  host: postgres-notification-service
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: rabbitmq-service
+  namespace: garage-namespace
+spec:
+  hosts:
+  - rabbitmq-service
+  http:
+  - route:
+    - destination:
+        host: rabbitmq-service
+        subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: rabbitmq-service
+  namespace: garage-namespace
+spec:
+  host: rabbitmq-service
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: api-gateway-service
+  namespace: garage-namespace
+spec:
+  hosts:
+  - api-gateway-service
+  http:
+  - route:
+    - destination:
+        host: api-gateway-service
+        subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: api-gateway-service
+  namespace: garage-namespace
+spec:
+  host: api-gateway-service
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: workshop-service
+  namespace: garage-namespace
+spec:
+  hosts:
+  - workshop-service
+  http:
+  - route:
+    - destination:
+        host: workshop-service
+        subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: workshop-service
+  namespace: garage-namespace
+spec:
+  host: workshop-service
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: postgres-workshop-service
+  namespace: garage-namespace
+spec:
+  hosts:
+  - postgres-workshop-service
+  http:
+  - route:
+    - destination:
+        host: postgres-workshop-service
+        subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: postgres-workshop-service
+  namespace: garage-namespace
+spec:
+  host: postgres-workshop-service
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+  subsets:
+  - name: v1
+    labels:
+      version: v1

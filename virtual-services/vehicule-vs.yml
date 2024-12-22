@@ -1,0 +1,54 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: vehicule-service
+  namespace: garage-namespace
+spec:
+  hosts:
+    - vehicule-service
+  http:
+    - route:
+        - destination:
+            host: vehicule-service
+            subset: v1
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: vehicule-service
+  namespace: garage-namespace
+spec:
+  host: vehicule-service
+  subsets:
+    - name: v1
+      labels:
+        version: v1
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: postgres-vehicule
+  namespace: garage-namespace
+spec:
+  hosts:
+    - postgres-vehicule-service
+  http:
+    - route:
+        - destination:
+            host: postgres-vehicule-service
+            subset: v1
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: postgres-vehicule
+  namespace: garage-namespace
+spec:
+  host: postgres-vehicule-service
+  subsets:
+    - name: v1
+      labels:
+        version: v1

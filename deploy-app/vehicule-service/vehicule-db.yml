@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-vehicule-service
+  namespace: garage-namespace
+spec:
+  selector:
+    app: postgres-vehicule
+  ports:
+    - port: 5434
+      protocol: TCP
+      targetPort: 5432
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-vehicule-statefulset
+  namespace: garage-namespace
+spec:
+  replicas: 1
+  serviceName: postgres-vehicule-service
+  selector:
+    matchLabels:
+      app: postgres-vehicule
+  template:
+    metadata:
+      labels:
+        app: postgres-vehicule
+        version: v1
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: postgres-vehicule-container
+          image: postgres:latest
+          env:
+            - name: POSTGRES_DB
+              value: vehicule_db
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: password
+          ports:
+            - containerPort: 5432
+              name: postgres-port
+          volumeMounts:
+            - name: postgresvol
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: postgresvol
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi

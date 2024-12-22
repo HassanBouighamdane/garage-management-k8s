@@ -1,0 +1,177 @@
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: default
+  namespace: garage-namespace
+spec:
+  mtls:
+    mode: STRICT
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: client-service
+  namespace: garage-namespace
+spec:
+  selector:
+    matchLabels:
+      name: client-service
+      version: v1
+  mtls:
+    mode: STRICT
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: postgres-client-service
+  namespace: garage-namespace
+spec:
+  selector:
+    matchLabels:
+      name: postgres-client-service
+      version: v1
+  mtls:
+    mode: STRICT
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: vehicule-service
+  namespace: garage-namespace
+spec:
+  selector:
+    matchLabels:
+      name: vehicule-service
+      version: v1
+  mtls:
+    mode: STRICT
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: postgres-vehicule-service
+  namespace: garage-namespace
+spec:
+  selector:
+    matchLabels:
+      name: postgres-vehicule-service
+      version: v1
+  mtls:
+    mode: STRICT
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: garage-frontend-service
+  namespace: garage-namespace
+spec:
+  selector:
+    matchLabels:
+      name: garage-frontend-service
+      version: v1
+  mtls:
+    mode: STRICT
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: invoice-service
+  namespace: garage-namespace
+spec:
+  selector:
+    matchLabels:
+      name: invoice-service
+      version: v1
+  mtls:
+    mode: STRICT
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: mongo-invoice-service
+  namespace: garage-namespace
+spec:
+  selector:
+    matchLabels:
+      name: mongo-invoice-service
+      version: v1
+  mtls:
+    mode: STRICT
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: notification-service
+  namespace: garage-namespace
+spec:
+  selector:
+    matchLabels:
+      name: notification-service
+      version: v1
+  mtls:
+    mode: STRICT
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: postgres-notification-service
+  namespace: garage-namespace
+spec:
+  selector:
+    matchLabels:
+      name: postgres-notification-service
+      version: v1
+  mtls:
+    mode: STRICT
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: rabbitmq-service
+  namespace: garage-namespace
+spec:
+  selector:
+    matchLabels:
+      name: rabbitmq-service
+      version: v1
+  mtls:
+    mode: STRICT
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: workshop-service
+  namespace: garage-namespace
+spec:
+  selector:
+    matchLabels:
+      name: workshop-service
+      version: v1
+  mtls:
+    mode: STRICT
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: postgres-workshop-service
+  namespace: garage-namespace
+spec:
+  selector:
+    matchLabels:
+      name: postgres-workshop-service
+      version: v1
+  mtls:
+    mode: STRICT
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: api-gateway-service
+  namespace: garage-namespace
+spec:
+  selector:
+    matchLabels:
+      name: api-gateway-service
+      version: v1
+  mtls:
+    mode: STRICT

@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-service
+  namespace: garage-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification-service
+  template:
+    metadata:
+      labels:
+        app: notification-service
+        version: v1
+    spec:
+      containers:
+        - name: notification-service
+          image: bouihassan/garage-management-notification-service:1.1.4
+          ports:
+            - containerPort: 8085
+
+          env:
+            - name: PROFILE
+              value: prod
+
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: notification-conf
+                  key: DB_HOST
+                  
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: notification-conf
+                  key: DB_NAME
+
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: notification-conf
+                  key: DB_PORT
+
+            - name: DB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: notification-conf
+                  key: DB_USERNAME
+
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: password
+
+            - name: RABBITMQ_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbitmq-conf
+                  key: RABBITMQ_HOST
+            - name: RABBITMQ_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbitmq-conf
+                  key: RABBITMQ_PORT
+            - name: RABBITMQ_USER
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: username
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification-service
+  namespace: garage-namespace
+spec:
+  ports:
+    - port: 8085
+      targetPort: 8085
+  selector:
+    app: notification-service
+  type: NodePort

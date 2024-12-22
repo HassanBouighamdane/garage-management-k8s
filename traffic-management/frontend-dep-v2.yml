@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: garage-frontend-v2
+  namespace: garage-namespace
+  labels:
+    app: garage-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: garage-frontend
+  template:
+    metadata:
+      labels:
+        app: garage-frontend
+        version: v2
+    spec:
+      containers:
+        - name: garage-frontend
+          image: bouihassan/garage-management-frontend:1.1.4-red
+          ports:
+            - containerPort: 3000
+          env:                                  
+            - name: REACT_APP_API_GATEWAY
+              value: "http://localhost:8080"

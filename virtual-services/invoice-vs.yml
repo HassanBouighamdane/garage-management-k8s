@@ -1,0 +1,54 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: invoice-service
+  namespace: garage-namespace
+spec:
+  hosts:
+    - invoice-service
+  http:
+    - route:
+        - destination:
+            host: invoice-service
+            subset: v1
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: invoice-service
+  namespace: garage-namespace
+spec:
+  host: invoice-service
+  subsets:
+    - name: v1
+      labels:
+        version: v1
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: mongo-invoice
+  namespace: garage-namespace
+spec:
+  hosts:
+    - mongo-invoice-service
+  http:
+    - route:
+        - destination:
+            host: mongo-invoice-service
+            subset: v1
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: mongo-invoice
+  namespace: garage-namespace
+spec:
+  host: mongo-invoice-service
+  subsets:
+    - name: v1
+      labels:
+        version: v1

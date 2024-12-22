@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: workshop-conf
+  namespace: garage-namespace
+data:
+  DB_NAME: "workshop_db"
+  DB_PORT: "5435"
+  DB_HOST: "postgres-workshop-service"
+  DB_USERNAME: "postgres"

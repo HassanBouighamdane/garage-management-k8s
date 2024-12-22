@@ -1,0 +1,26 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: rabbitmq-service
+  namespace: garage-namespace
+spec:
+  hosts:
+    - rabbitmq-service
+  http:
+    - route:
+        - destination:
+            host: rabbitmq-service
+            subset: v1
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: rabbitmq-service
+  namespace: garage-namespace
+spec:
+  host: rabbitmq-service
+  subsets:
+    - name: v1
+      labels:
+        version: v1

@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-workshop-service
+  namespace: garage-namespace
+spec:
+  selector:
+    app: postgres-workshop
+  ports:
+    - port: 5435
+      protocol: TCP
+      targetPort: 5432
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-workshop-statefulset
+  namespace: garage-namespace
+spec:
+  replicas: 1
+  serviceName: postgres-workshop-service
+  selector:
+    matchLabels:
+      app: postgres-workshop
+  template:
+    metadata:
+      labels:
+        app: postgres-workshop
+        version: v1
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: postgres-workshop-container
+          image: postgres:latest
+          env:
+            - name: POSTGRES_DB
+              value: workshop_db
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: password
+          ports:
+            - containerPort: 5432
+              name: postgres-port
+          volumeMounts:
+            - name: postgresvol
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: postgresvol
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi

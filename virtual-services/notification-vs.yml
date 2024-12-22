@@ -1,0 +1,54 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: notification-service
+  namespace: garage-namespace
+spec:
+  hosts:
+    - notification-service
+  http:
+    - route:
+        - destination:
+            host: notification-service
+            subset: v1
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: notification-service
+  namespace: garage-namespace
+spec:
+  host: notification-service
+  subsets:
+    - name: v1
+      labels:
+        version: v1
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: mysql-notification
+  namespace: garage-namespace
+spec:
+  hosts:
+    - mysql-notification-service
+  http:
+    - route:
+        - destination:
+            host: mysql-notification-service
+            subset: v1
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: mysql-notification
+  namespace: garage-namespace
+spec:
+  host: mysql-notification-service
+  subsets:
+    - name: v1
+      labels:
+        version: v1

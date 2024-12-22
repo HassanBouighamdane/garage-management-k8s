@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: invoice-service
+  namespace: garage-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: invoice-service
+  template:
+    metadata:
+      labels:
+        app: invoice-service
+        version: v1
+    spec:
+      containers:
+        - name: invoice-service
+          image: bouihassan/garage-management-invoice-service:1.1.3
+          ports:
+            - containerPort: 8084
+
+          env:
+            - name: PROFILE
+              value: prod
+
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: invoice-conf
+                  key: DB_HOST
+                  
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: invoice-conf
+                  key: DB_NAME
+
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: invoice-conf
+                  key: DB_PORT
+
+            - name: DB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: invoice-conf
+                  key: DB_USERNAME
+
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: password
+
+            - name: RABBITMQ_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbitmq-conf
+                  key: RABBITMQ_HOST
+            - name: RABBITMQ_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbitmq-conf
+                  key: RABBITMQ_PORT
+            - name: RABBITMQ_USER
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: username
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: invoice-service
+  namespace: garage-namespace
+spec:
+  ports:
+    - port: 8084
+      targetPort: 8084
+  selector:
+    app: invoice-service
+  type: NodePort

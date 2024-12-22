@@ -1,0 +1,54 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: workshop-service
+  namespace: garage-namespace
+spec:
+  hosts:
+    - workshop-service
+  http:
+    - route:
+        - destination:
+            host: workshop-service
+            subset: v1
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: workshop-service
+  namespace: garage-namespace
+spec:
+  host: workshop-service
+  subsets:
+    - name: v1
+      labels:
+        version: v1
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: mysql-workshop
+  namespace: garage-namespace
+spec:
+  hosts:
+    - mysql-workshop-service
+  http:
+    - route:
+        - destination:
+            host: mysql-workshop-service
+            subset: v1
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: mysql-workshop
+  namespace: garage-namespace
+spec:
+  host: mysql-workshop-service
+  subsets:
+    - name: v1
+      labels:
+        version: v1

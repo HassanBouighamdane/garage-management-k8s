@@ -1,0 +1,26 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: api-gateway-service
+  namespace: garage-namespace
+spec:
+  hosts:
+    - api-gateway-service
+  http:
+    - route:
+        - destination:
+            host: api-gateway-service
+            subset: v1
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: api-gateway-service
+  namespace: garage-namespace
+spec:
+  host: api-gateway-service
+  subsets:
+    - name: v1
+      labels:
+        version: v1
